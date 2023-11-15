@@ -1,0 +1,100 @@
+<div class="dropdown text-end">
+    <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" id="dropdownToggle">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
+            <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+        </svg>
+    </a>
+    <ul class="dropdown-menu dorpdown-menu-cart text-small" aria-labelby="dropdownToggle">
+        <div id="cart-details">
+        </div>
+        <div class="total-cart">
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="#">Total Price: <span id="total-cart-price">0.00</span> Lei</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a id="cart-checkout" class="dropdown-item text-center fw-bolder" href="#">Buy</a></li>
+        </div>
+    </ul>
+</div>
+
+<script>
+    function updateCartTotal() {
+        const total = window.cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
+        document.getElementById('total-cart-price').textContent = total.toFixed(2);
+    }
+
+    function addToCart(product) {
+        const cartItem = window.cart.find((item) => item.id === product.id);
+        if (cartItem) {
+            cartItem.quantity += product.quantity;
+        } else {
+            window.cart.push({ ...product, quantity: product.quantity});
+        }
+
+        updateCartDisplay();
+    }
+
+    function updateCartDisplay() {
+        const cartItemsList = document.getElementById('cart-details');
+        cartItemsList.innerHTML = '';
+        window.cart.forEach((item) => {
+            let sumPrice = item.price * item.quantity;
+            const listItem = document.createElement('li');
+            listItem.innerHTML = `
+        <li class="product-list fw-bolder">
+        <a class="dropdown-item" href="#"> ${ item.name } x ${ item.quantity }</a>
+        <span class="product-price mx-2">${sumPrice.toFixed(2)}</span>&nbsp;<span>Lei</span>
+        <button onclick="removeFromCart(${item.id})" class="remove-from-cart btn btn-sm btn-danger  mx-2 float-end">-</button>
+        </li>
+        `;
+            cartItemsList.appendChild(listItem);
+        });
+
+        if (window.cart.length === 0) {
+            cartItemsList.innerHTML = '<li class="text-center"><a class="dropdown-item" href="#">Cart is Empty</a></li>';
+        }
+
+        updateCartTotal();
+    }
+
+    function removeFromCart(productId) {
+        const itemIndex = window.cart.findIndex((item) => item.id === productId);
+        if (itemIndex !== -1) {
+            if (window.cart[itemIndex].quantity > 1) {
+                window.cart[itemIndex].quantity--;
+            } else {
+                window.cart.splice(itemIndex, 1);
+            }
+            updateCartDisplay();
+        }
+    }
+
+    function checkout() {
+        // Implement the checkout process here, e.g., send cart data to the server
+        // This is a placeholder function.
+        console.log('Checkout clicked. Cart data:', window.cart);
+    }
+
+    document.getElementById('cart-checkout').addEventListener('click', checkout);
+
+    // Initialize the cart display
+    updateCartDisplay();
+
+    $(document).on('click', function (event) {
+        let dropdownToggle = $('#dropdownToggle');
+        let dropdownMenu = $('.dropdown-menu-cart');
+
+        // Check if the clicked element is the toggle button or inside the dropdown
+        if (!dropdownToggle.is(event.target) && !dropdownMenu.is(event.target) && dropdownMenu.has(event.target).length === 0) {
+            // Close the dropdown if the click is outside
+            dropdownMenu.removeClass('show');
+        }
+
+        // Prevent the dropdown from closing when clicking inside it
+        $('.dropdown-menu').on('click', function (event) {
+            event.stopPropagation();
+        });
+
+    });
+
+
+</script>

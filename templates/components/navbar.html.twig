@@ -1,0 +1,54 @@
+<header class="p-3 mb-3 border-bottom">
+    <div class="container">
+        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                <li><a href="{{ path('homepage') }}" class="nav-link px-2 link-secondary">Diana Caragheorghiev (Ferreyra) - Home Page</a></li>
+
+            </ul>
+
+            <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
+                <input type="search" class="form-control" placeholder="Search...ToDo" aria-label="Search">
+            </form>
+
+            <div class="dropdown text-end">
+                <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-emoji-wink" viewBox="0 0 16 16">
+                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                        <path d="M4.285 9.567a.5.5 0 0 1 .683.183A3.498 3.498 0 0 0 8 11.5a3.498 3.498 0 0 0 3.032-1.75.5.5 0 1 1 .866.5A4.498 4.498 0 0 1 8 12.5a4.498 4.498 0 0 1-3.898-2.25.5.5 0 0 1 .183-.683zM7 6.5C7 7.328 6.552 8 6 8s-1-.672-1-1.5S5.448 5 6 5s1 .672 1 1.5zm1.757-.437a.5.5 0 0 1 .68.194.934.934 0 0 0 .813.493c.339 0 .645-.19.813-.493a.5.5 0 1 1 .874.486A1.934 1.934 0 0 1 10.25 7.75c-.73 0-1.356-.412-1.687-1.007a.5.5 0 0 1 .194-.68z"/>
+                    </svg>
+                    {% else %}
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+                        <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+                        <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
+                    </svg>
+                    {% endif %}
+                </a>
+                <ul class="dropdown-menu text-small">
+                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                        <li><a class="dropdown-item" href="{{ path('app_logout') }}">Logout</a></li>
+                    {% else %}
+                        <li><a class="dropdown-item" href="{{ path('app_login') }}">Login</a></li>
+                        <li><a class="dropdown-item" href="{{ path('app_register') }}">Sign In</a></li>
+                    {% endif %}
+
+
+                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                    <li><a class="dropdown-item" href="{{ path('user_orders') }}">Orders</a></li>
+                    {% endif %}
+
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="{{ path('admin') }}">Admin Dashboard</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+
+            &nbsp;
+            &nbsp;
+            &nbsp;
+
+            {% include '/components/cart.html.twig' %}
+        </div>
+    </div>
+</header>

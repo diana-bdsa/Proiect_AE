@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Diana Caragheorghiev (Ferreyra) {% endblock %}
+
+{% block body %}
+{% include 'components/navbar.html.twig' %}
+<hr/>
+{% include 'components/products/list.html.twig' %}
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        window.cart = {{ cart | json_encode | raw }};
+
+        $(document).ready(function() {
+            $('.add-to-cart').on("click", function(ev) {
+                ev.preventDefault();
+                let $product = $(this).closest('.product');
+                let id = parseInt($(this).data('product-id'), 10);
+                let quantity = parseInt($product.find('.quantity').val());
+                let name = $product.find('.product-name').text();
+                let price = parseFloat($product.find('.product-price').text());
+
+                let product = {
+                    id: id,
+                    name: name,
+                    price: price,
+                    quantity: quantity
+                }
+
+                addToCart(product);
+            });
+
+            $('#cart-checkout').on('click', function(event) {
+                event.preventDefault();
+                $.ajax({
+                    type: 'POST',
+                    url: '/checkoutaction',
+                    contentType: 'application/json',
+                    data: JSON.stringify(window.cart),
+                    success: function (response) {
+                        console.log(response);
+                        window.location.href = '/checkout';
+                    },
+                    error: function (error) {
+                        console.error('Error sending cart data:', error);
+                        // Handle error
+                    }
+                });
+
+                event.stopPropagation();
+            });
+        });
+    </script>
+{% endblock %}

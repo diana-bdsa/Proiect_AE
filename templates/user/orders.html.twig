@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Diana Caragheorghiev (Ferreyra) - Orders Page  {% endblock %}
+
+{% block body %}
+    {% include 'components/navbar.html.twig' %}
+    <hr/>
+
+    <div class="container mx-5 my-5 px-5 py-5">
+        {%  for key, order in orders %}
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="btn btn-primary collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-{{ order.id }}" aria-expanded="false" aria-controls="collapse-{{ order.id }}">
+                    Order # {{ order.id }}
+                </button>
+            </h2>
+            <div id="collapse-{{ order.id }}" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                    <ul class="text-small shadow">
+                        <li class="dropdown-item text-wrap">First Name: <strong>{{ order.firstName }}</strong></li>
+                        <li class="dropdown-item text-wrap">Last Name: <strong>{{ order.lastName }}</strong></li>
+                        <li class="dropdown-item text-wrap">Email: <strong>{{ order.email }}</strong></li>
+                        <li class="dropdown-item text-wrap">Country: <strong>{{ order.country }}</strong></li>
+                        <li class="dropdown-item text-wrap">State: <strong>{{ order.state }}</strong></li>
+                        <li class="dropdown-item text-wrap">Address: <strong>{{ order.address }}</strong></li>
+                        <li class="dropdown-item text-wrap">ZIP: <strong>{{ order.zip }}</strong></li>
+                    </ul>
+                    <br />
+                    <div class="order-items">
+                        {% for key, item in order.orderItems %}
+                            <div class="d-flex flex-wrap align-items-center justify-content-lg-start px-3">
+                                <img src="/images/products/{{ item.product.imagePath }}"  alt="{{ item.product.name }}" width="50px" height="10%" />
+                                &nbsp;
+                                &nbsp;
+                                &nbsp;
+                                <p>{{ item.product.name }}</p>
+                                &nbsp;
+                                &nbsp;
+                                &nbsp;
+                                <p>x</p>
+                                <p>{{ item.quantity }}</p>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr />
+        {% endfor %}
+    </div>
+{% endblock %}

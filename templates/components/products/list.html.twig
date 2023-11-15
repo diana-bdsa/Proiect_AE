@@ -1,0 +1,7 @@
+<div id="product-list" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3 mx-5 px-5">
+    {%  for key, product in products %}
+    <div class="col">
+        {% include 'components/products/product.html.twig' %}
+    </div>
+    {% endfor %}
+</div>
