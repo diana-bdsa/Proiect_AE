@@ -47,9 +47,9 @@ Deschide un terminal in folderul proiectului
 
 scrie in terminal "composer install" si asteapta install-ul
 
-scrie in terminal "doctrine:database:create" si asteapta crearea bazei de date
+scrie in terminal "bin/console doctrine:database:create" si asteapta crearea bazei de date
 
-scrie in terminal "doctrine:migrations:migrate" si asteapta migrarea bazei de date
+scrie in terminal "bin/console doctrine:migrations:migrate" si asteapta migrarea bazei de date
 
 8. Scrie in terminal "symfony server:start"
 
